@@ -6,13 +6,17 @@ import { UtilsErrorService } from "@/lib/utils/errors";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
 import { GoTrash } from "react-icons/go";
-import { useSearchParams } from "react-router";
+import { useLocation, useNavigate, useSearchParams } from "react-router";
 import { useLocalStorage } from "react-use";
 import Swal from "sweetalert2";
+import { LiaReadme } from "react-icons/lia";
 import { CarUpdate } from "./CarUpdate";
+import { TooltipAction } from "@/components/fragments/TooltipAction";
 
 export const CarItem = () => {
         const queryClient = useQueryClient()
+        const navigate = useNavigate()
+        const location = useLocation()
         const [searchParams] = useSearchParams()
     
         const [token] = useLocalStorage("token", "")
@@ -58,6 +62,10 @@ export const CarItem = () => {
                 }
             })
         }
+
+        const handleToDetail = (id: string) => {
+            navigate(`${location.pathname}/detail/${id}`)
+        }
     
         if(query.isLoading) return <p>Loading...</p>
         if(query.isError) return <p>Error...</p>
@@ -80,13 +88,16 @@ export const CarItem = () => {
                 </TableHeader>
                 <TableBody>
                     {dataCar.map((car, index: number) => {
-                        const statusCar = clsx("text-sm font-semibold rounded-full text-center max-w-[70%] capitalize py-px", car.status === "available" ? "text-green-500 bg-green-200" : car.status === "rented" ? "text-gray-500 bg-gray-200" : "text-red-700 bg-red-200")
+                        const statusCar = clsx("text-sm font-semibold rounded-full text-center max-w-[70%] capitalize px-2 py-px", car.status === "available" ? "text-green-500 bg-green-200" : car.status === "rented" ? "text-gray-500 bg-gray-200" : "text-red-700 bg-red-200")
+                        const thumbnail = car.images.find(image => image.is_primary == true)
+                            
+                        console.log({thumbnail})
                         return (
                         <TableRow key={car._id} className="text-lg">
                             <TableCell>{index + 1}</TableCell>
                             <TableCell>
                                 <figure className="w-20">
-                                    <img src={car.thumbnail ? `${config.BASEURLIMAGE}${car.thumbnail}` : "/images/car-default.jpg"} alt={car.name} className="w-full h-full" />
+                                    <img src={thumbnail ? `${config.BASEURLIMAGE}${thumbnail.image_url}` : "/images/car-default.jpg"} alt={car.name} className="w-full h-full" />
                                 </figure>
                             </TableCell>
                             <TableCell>{car.name}</TableCell>
@@ -102,10 +113,19 @@ export const CarItem = () => {
                             })}</TableCell>
                             <TableCell>
                                  <div className="flex items-center gap-4">
-                                    <CarUpdate id={car._id} />
-                                    <button onClick={() => handleConfirmationDelete(car._id)} className="text-xl cursor-pointer text-red-500">
-                                        <GoTrash />
-                                    </button>
+                                    <TooltipAction text="Detail">
+                                        <button onClick={() => handleToDetail(car._id)} className="text-2xl cursor-pointer text-green-500">
+                                            <LiaReadme />
+                                        </button>
+                                    </TooltipAction>
+                                    <TooltipAction text="Update">
+                                        <CarUpdate id={car._id} />
+                                    </TooltipAction>
+                                    <TooltipAction text="Delete">
+                                        <button onClick={() => handleConfirmationDelete(car._id)} className="text-xl cursor-pointer text-red-500">
+                                            <GoTrash />
+                                        </button>
+                                    </TooltipAction>
                                  </div>
                             </TableCell>
                         </TableRow>

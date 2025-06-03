@@ -3,7 +3,7 @@ import { BrandAdd } from "./components/BrandAdd";
 import { BrandItem } from "./components/BrandItem";
 import { Input } from "@/components/ui/input";
 import { IoSearch } from "react-icons/io5";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate, useSearchParams } from "react-router";
 import type React from "react";
 import { useMemo } from "react";
 import debounce from "lodash.debounce"
@@ -11,18 +11,19 @@ import debounce from "lodash.debounce"
 const PageDashboardCarBrand = () => {
     const navigate = useNavigate()
     const location = useLocation()
+    const [searchParams] = useSearchParams()
     const [token] = useLocalStorage("token", "")
 
     const searchDebounce = useMemo(() => debounce((key: string, params: string) => {
-        let url;
+        const urlParams = new URLSearchParams(window.location.search)
 
         if(params) {
-            url = `${location.pathname}?${key}=${encodeURI(params)}`
+            urlParams.set(key, params)
         } else {
-            url = location.pathname
+            urlParams.delete(key)
         }
 
-        navigate(url)
+        navigate(`${location.pathname}?${urlParams.toString()}`)
 
     }, 1000), [location.pathname, navigate])
 
@@ -38,7 +39,7 @@ const PageDashboardCarBrand = () => {
                 <div className="flex items-center gap-3">
                     <div className="relative">
                         <IoSearch className="absolute top-1/2 -translate-y-1/2 left-3" />
-                        <Input type="text" placeholder="Search brand..." className="pl-9" onChange={(e) => handleSearchBrand("keyword", e)} />
+                        <Input type="text" placeholder="Search brand..." className="pl-9" defaultValue={searchParams.get("keyword") ?? ""} onChange={(e) => handleSearchBrand("keyword", e)} />
                     </div>
                     <BrandAdd token={token!} />
                 </div>

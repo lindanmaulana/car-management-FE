@@ -5,6 +5,8 @@ import { UtilsErrorService } from "../utils/errors";
 export interface ServiceCarParams {
     params?: string
 }
+
+
 export class ServiceCar {
     static async create(token: string, data: typeCarCreateSchema) {
         if(token) setToken(token)
@@ -20,6 +22,17 @@ export class ServiceCar {
     static async getAll({params}: ServiceCarParams) {
         try {
             const response = await axiosInstance.get(`/cars?${params}`)
+
+            return response.data
+        } catch (err) {
+            throw new Error(UtilsErrorService(err))
+        }
+    }
+
+    static async getOne(token: string, id: string) {
+        setToken(token)
+        try {
+            const response = await axiosInstance.get(`/cars/${id}`)
 
             return response.data
         } catch (err) {

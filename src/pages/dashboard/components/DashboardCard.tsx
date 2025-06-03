@@ -3,13 +3,14 @@ import { useCarGetAll } from "@/lib/query/car/useCarGetAll"
 import { LuMoveRight } from "react-icons/lu"
 import { Link } from "react-router"
 import { LoadingDashboardCard } from "./loading/LoadingDashboardCard"
+import { RedirectSession } from "@/components/fragments/RedirectSession"
 
 export const DashboardCard = () => {
         const queryCar = useCarGetAll({params: ""})
         const queryBrand = useBrandGetAll({params: ""})
         
         if(queryCar.isLoading || queryBrand.isLoading) return <LoadingDashboardCard />
-        if(queryCar.isError || queryBrand.isError) return <p>Error {queryCar.error?.message} || {queryBrand.error?.message}...</p>
+        if(queryCar.isError || queryBrand.isError) return <RedirectSession message={queryBrand.error?.message} />
         
         const dataCar = queryCar.data.data
         const dataBrand = queryBrand.data.data

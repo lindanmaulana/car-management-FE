@@ -1,6 +1,6 @@
 import config from "@/config";
 import axios, { type AxiosInstance } from "axios"
-console.log({config: config.BASEURLAPI})
+
 export const axiosInstance: AxiosInstance = axios.create({
     baseURL: config.BASEURLAPI
 })

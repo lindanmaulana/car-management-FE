@@ -14,9 +14,6 @@ export const LayoutDashboardCar = () => {
                         <li>
                             <NavLink to={'brand'}  className={({isActive}) => isActive ? "px-4 py-1 bg-gray-800 text-white rounded" : "px-2 rounded py-1"}>Brand</NavLink>
                         </li>
-                        <li>
-                            <NavLink to={'image'}  className={({isActive}) => isActive ? "px-4 py-1 bg-gray-800 text-white rounded" : "px-2 rounded py-1"}>Image</NavLink>
-                        </li>
                     </ul>
                 </nav>
                 <Outlet />

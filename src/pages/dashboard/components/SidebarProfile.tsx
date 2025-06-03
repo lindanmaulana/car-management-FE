@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { useLocalStorage } from "react-use";
 import Swal from "sweetalert2";
 import { LoadingSidebarProfile } from "./loading/LoadingSidebarProfile";
+import { RedirectSession } from "@/components/fragments/RedirectSession";
 
 export const SidebarProfile = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ export const SidebarProfile = () => {
     Swal.fire({
       title: "Are you sure ?",
       text: "Are you sure you want to log out? You’ll need to log in again to access your account.",
+      icon: "info",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
@@ -33,7 +35,7 @@ export const SidebarProfile = () => {
   };
   
   if (query.isLoading) return <LoadingSidebarProfile />;
-  if (query.isError) return <p>Error...</p>;
+  if (query.isError) return <RedirectSession message={query.error?.message} />;
 
   const profile = query.data.data;
   return (
