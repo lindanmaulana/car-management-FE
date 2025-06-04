@@ -1,8 +1,6 @@
 export interface Response<T> {
     success: boolean
-    data: {
-        data: T
-    },
+    data: T,
     message: string
     total: number
 }

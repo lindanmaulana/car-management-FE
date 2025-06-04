@@ -15,6 +15,7 @@ import { useNavigate } from "react-router"
 
 export const FormSignin = () => {
     const [, setToken] = useLocalStorage("token", "")
+    const [, setRole] = useLocalStorage("role", "")
     const navigate = useNavigate()
 
     const form = useForm<typeUserSignin>({
@@ -40,6 +41,7 @@ export const FormSignin = () => {
                 })
 
                 setToken(data.data.token)
+                setRole(data.data.role)
                 navigate("/dashboard")
             },
 

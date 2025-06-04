@@ -8,6 +8,7 @@ import LayoutAuth from "./pages/auth/Layout.tsx";
 import PageSignin from "./pages/auth/signin/Index.tsx";
 import PageSignup from "./pages/auth/signup/Index.tsx";
 import PageDashboardCarBrand from "./pages/dashboard/car/brand/index.tsx";
+import { CarAdd } from "./pages/dashboard/car/components/CarAdd.tsx";
 import { PageDashboardCarDetail } from "./pages/dashboard/car/detail/index.tsx";
 import PageDashboardCar from "./pages/dashboard/car/index.tsx";
 import { LayoutDashboardCar } from "./pages/dashboard/car/Layout.tsx";
@@ -40,6 +41,7 @@ createRoot(document.getElementById("root")!).render(
 
             <Route path="car" element={<LayoutDashboardCar />}>
               <Route index element={<PageDashboardCar />} />
+              <Route path="add" element={<CarAdd />} />
               <Route path="brand" element={<PageDashboardCarBrand />} />
               <Route path="detail/:id" element={<PageDashboardCarDetail />} />
             </Route>

@@ -1,3 +1,4 @@
+import type { CarDetail } from "./car-detail"
 import type { CarImage } from "./car-images"
 
 export interface Car {
@@ -9,6 +10,7 @@ export interface Car {
         country: string
     },
     images: CarImage[]
+    car_detail: CarDetail,
     model: string
     status: string
     price: number

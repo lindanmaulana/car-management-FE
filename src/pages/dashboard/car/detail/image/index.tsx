@@ -73,7 +73,7 @@ export const PageDashboardCarImage = () => {
 
     return (
         <Dialog open={open} onOpenChange={() => setOpen(!open)}>
-            <DialogTrigger className="col-span-1 w-full h-52 bg-green-500 flex items-center justify-center rounded-xl" asChild>
+            <DialogTrigger className="col-span-1 w-full h-36 bg-green-500 flex items-center justify-center rounded-xl" asChild>
                 <div>
                     <BiImageAdd className="text-4xl text-white" />
                 </div>

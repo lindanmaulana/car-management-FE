@@ -9,6 +9,7 @@ import { Sidebar } from "./components/Sidebar"
 const LayoutDashboard = () => {
     const navigate = useNavigate()
     const [token] = useLocalStorage("token", "")
+    const [role] = useLocalStorage("role", "")
     const setToken = useStoreAuth((state) => state.setToken)
 
     useEffectOnce(() => {
@@ -30,6 +31,7 @@ const LayoutDashboard = () => {
  
                  if(result.isConfirmed) {
                      localStorage.removeItem("token")
+                     localStorage.removeItem("role")
                      navigate("/auth/signin")
                  }
              } else {
@@ -38,7 +40,7 @@ const LayoutDashboard = () => {
          }
 
          checkToken()
-     }, [navigate, token, setToken])
+     }, [navigate, token, role, setToken])
     
     return (
          <div className="h-screen overflow-hidden">

@@ -1,10 +1,11 @@
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { IoSearch } from "react-icons/io5";
-import { CarAdd } from "./components/CarAdd";
-import { CarItem } from "./components/CarItem";
-import { useMemo } from "react";
 import debounce from "lodash.debounce";
-import { useLocation, useNavigate, useSearchParams } from "react-router";
+import { useMemo } from "react";
+import { IoIosAdd } from "react-icons/io";
+import { IoSearch } from "react-icons/io5";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router";
+import { CarItem } from "./components/CarItem";
 
 const PageDashboardCar = () => {
     const location = useLocation()
@@ -37,7 +38,9 @@ const PageDashboardCar = () => {
                         <IoSearch className="absolute top-1/2 -translate-y-1/2 left-3" />
                         <Input type="text" placeholder="Search car..." className="pl-9" defaultValue={searchParams.get("keyword") ?? ""} onChange={(e) => handleSearch("keyword", e)} />
                     </div>
-                    <CarAdd />
+                    <Button asChild>
+                        <Link to={`${location.pathname}/add`}><IoIosAdd className="mt-px" /> Add New</Link>
+                    </Button>
                 </div>
             </div>
             <CarItem />

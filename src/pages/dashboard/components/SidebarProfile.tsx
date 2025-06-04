@@ -29,6 +29,7 @@ export const SidebarProfile = () => {
         });
 
         localStorage.removeItem("token");
+        localStorage.removeItem("role")
         navigate("/auth/signin");
       }
     });
