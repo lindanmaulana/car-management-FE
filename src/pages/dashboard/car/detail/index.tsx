@@ -18,6 +18,8 @@ import { useLocalStorage } from "react-use"
 import Swal from "sweetalert2"
 import { CarHeader } from "../components/CarHeader.tsx"
 import { PageDashboardCarImage } from "./image"
+import { PiSelectionBackgroundLight } from "react-icons/pi"
+import { TooltipAction } from "@/components/fragments/TooltipAction.tsx"
 
 export const PageDashboardCarDetail = () => {
     const queryClient = useQueryClient()
@@ -101,20 +103,30 @@ export const PageDashboardCarDetail = () => {
 
     const preview = imagePrimary ? `${config.BASEURLIMAGE}${imagePrimary.image_url}` : "/images/car-default.jpg"
 
-    const classStatus = clsx("absolute top-4 right-5 font-normal rounded-full px-4 py-1 capitalize z-50", dataCar.status === "available" ? "text-white bg-green-700" : dataCar.status === "rented" ? "text-white bg-gray-700" : "text-white bg-red-700")
+    const classStatus = clsx("absolute top-4 right-4 font-normal text-sm rounded-sm px-4 py-1 capitalize z-50", dataCar.status === "available" ? "text-white bg-green-700" : dataCar.status === "rented" ? "text-white bg-gray-700" : "text-white bg-red-700")
     return (
         <div className="space-y-10">
             <CarHeader title="Car Detail" />
-            <div className="relative h-[340px] bg-center bg-cover bg-no-repeat rounded-xl">
+            <div className="w-full h-[340px] bg-center rounded-xl">
                 {!imagePreview.url ? (
                     <div className="h-full grid grid-cols-3 gap-4">
-                        <figure className="col-span-2 h-full ">
-                            <img src={preview} alt="" className="h-full object-cover" />
+                        <figure className="relative col-span-2 w-full h-[500px] rounded">
+                            <img src={preview} alt={dataCar.name} className="w-full h-full object-cover rounded-lg" />
+                            <strong className={classStatus}>{dataCar.status}</strong>
                         </figure>
-                        <div className="space-y-8">
+                        <div className="space-y-6">
                             <div>
                                 <h5 className="text-3xl font-semibold text-primary"><strong className="font-normal">{dataCar.brand_id.name}</strong> | <span className="text-blue-500">{dataCar.name}</span></h5>
                                 <p className="text-gray-500">{dataCar.model}</p>
+                            </div>
+                            <div>
+                                <h6 className="text-base font-semibold text-gray-600">Price</h6>
+                                <p className="text-xl text-green-500">{dataCar.price.toLocaleString("id-ID", {
+                                    currency: "IDR",
+                                    style: "currency",
+                                    maximumFractionDigits: 0
+                                    })}
+                                </p>
                             </div>
                             <div className="space-y-4">
                                 <h6 className="text-base font-semibold text-gray-600">Car Detail</h6>
@@ -137,46 +149,37 @@ export const PageDashboardCarDetail = () => {
                                     </article>
                                 </article>
                             </div>
-                            <div className="space-y-4">
+                            <div className="space-y-1">
                                 <h6 className="text-base font-semibold text-gray-600">Description</h6>
-                                <p>{dataCar.car_detail.description}</p>
+                                <p className="text-base text-gray-600">{dataCar.car_detail.description}</p>
                             </div>
                         </div>
                     </div>
                     ) : (
-                        <>
-                            <figure className="absolute inset-0 flex items-center justify-center w-full h-full bg-gray-800 rounded-xl">
-                                <img src={`${config.BASEURLIMAGE}${imagePreview.url}`} alt="" className="w-[400px]" />
-                            </figure>
-                            <div className="absolute bottom-5 px-5 w-full flex items-center justify-between gap-6">
-                                <div className="-space-y-1">
-                                    <p className="text-white/70 text-sm">{dataCar.brand_id.name}</p>
-                                    <h3 className="text-white font-semibold text-2xl">{dataCar.name}</h3>
-                                </div>
-
-                                <p className="text-2xl text-green-500">{dataCar.price.toLocaleString("id-ID", {
-                                    currency: "IDR",
-                                    style: "currency",
-                                    maximumFractionDigits: 0
-                                    })}
-                                </p>
-
-                                <div className="flex items-center gap-2">
-                                    <Button onClick={() => handleDeleteImage(imagePreview.id)} className="bg-red-500">Delete Image</Button>
-                                    <Button onClick={() => handleUpdateCarImagePrimary(imagePreview.id)} className="text-white text-xs bg-green-500 cursor-pointer"><RiImageCircleAiLine /> Set thumbnail</Button>
-                                </div>
+                        <div className="relative w-full h-full">
+                            <div className="w-full h-full">
+                                <figure className="flex items-center justify-center w-full h-full bg-gray-800 rounded-xl">
+                                    <img src={`${config.BASEURLIMAGE}${imagePreview.url}`} alt="" className="w-full h-full object-cover rounded-lg" />
+                                </figure>
                             </div>
-                        </>
+                            <div className="absolute top-4 right-4 flex items-center gap-4">
+                                <TooltipAction text="Close">
+                                    <Button onClick={() => setImagePreview({id: "", url: ""})} className=" text-white cursor-pointer text-2xl"><PiSelectionBackgroundLight /></Button>
+                                </TooltipAction>
+                                <Button onClick={() => handleDeleteImage(imagePreview.id)} className="text-xs cursor-pointer bg-red-500">Delete Image</Button>
+                                <Button onClick={() => handleUpdateCarImagePrimary(imagePreview.id)} className="text-white text-xs bg-green-500 cursor-pointer"><RiImageCircleAiLine /> Set thumbnail</Button>
+                            </div>
+                        </div>
                     )}
             </div>
             <div className="w-full grid grid-cols-5 gap-4">
                 <Carousel opts={{loop: true, align: "start"}} plugins={[Autoplay({delay: 2000, stopOnInteraction: false})]} className={clsx(dataCar.images.length > 0 ? "col-span-4" : "col-span-5")}>
                     <CarouselContent >
                         {dataCar.images.length !== 0 ? dataCar.images.map(image => (
-                            <CarouselItem key={image._id} className="basis-1/3 cursor-pointer " onClick={() => setImagePreview({url: image.image_url, id: image._id})}>
-                                <Card className="h-36">
-                                    <CardContent>
-                                        <img src={`${config.BASEURLIMAGE}${image.image_url}`} alt={image.createdAt} className="w-full h-full object-cover" />
+                            <CarouselItem key={image._id} className="basis-1/3 cursor-pointer h-48" onClick={() => setImagePreview({url: image.image_url, id: image._id})}>
+                                <Card className="h-full p-0">
+                                    <CardContent className="p-0">
+                                        <img src={`${config.BASEURLIMAGE}${image.image_url}`} alt={image.createdAt} className="w-full h-48 object-cover rounded-xl" />
                                     </CardContent>
                                 </Card>
                             </CarouselItem>
@@ -189,8 +192,6 @@ export const PageDashboardCarDetail = () => {
                 </Carousel>
                 {dataCar.images.length > 0 && (
                     <PageDashboardCarImage />
-                    // <Card className="col-span-1 w-full h-52 bg-green-500 flex items-center justify-center">
-                    // </Card>
                 )}
             </div>
         </div>

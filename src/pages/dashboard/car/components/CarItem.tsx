@@ -1,3 +1,4 @@
+import { TooltipAction } from "@/components/fragments/TooltipAction";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import config from "@/config";
 import { useCarGetAll } from "@/lib/query/car/useCarGetAll";
@@ -5,13 +6,12 @@ import { ServiceCar } from "@/lib/services/cars";
 import { UtilsErrorService } from "@/lib/utils/errors";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
+import { FiEdit } from "react-icons/fi";
 import { GoTrash } from "react-icons/go";
-import { useLocation, useNavigate, useSearchParams } from "react-router";
+import { LiaReadme } from "react-icons/lia";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router";
 import { useLocalStorage } from "react-use";
 import Swal from "sweetalert2";
-import { LiaReadme } from "react-icons/lia";
-import { CarUpdate } from "./CarUpdate";
-import { TooltipAction } from "@/components/fragments/TooltipAction";
 
 export const CarItem = () => {
         const queryClient = useQueryClient()
@@ -96,8 +96,8 @@ export const CarItem = () => {
                         <TableRow key={car._id} className="text-lg">
                             <TableCell>{index + 1}</TableCell>
                             <TableCell>
-                                <figure className="w-20">
-                                    <img src={thumbnail ? `${config.BASEURLIMAGE}${thumbnail.image_url}` : "/images/car-default.jpg"} alt={car.name} className="w-full h-full" />
+                                <figure className="size-20">
+                                    <img src={thumbnail ? `${config.BASEURLIMAGE}${thumbnail.image_url}` : "/images/car-default.jpg"} alt={car.name} className="w-full h-full object-cover rounded" />
                                 </figure>
                             </TableCell>
                             <TableCell>{car.name}</TableCell>
@@ -119,7 +119,9 @@ export const CarItem = () => {
                                         </button>
                                     </TooltipAction>
                                     <TooltipAction text="Update">
-                                        <CarUpdate id={car._id} />
+                                        <Link to={`${location.pathname}/update/${car._id}`} className="text-xl cursor-pointer text-blue-500">
+                                             <FiEdit className="mt-px" />
+                                        </Link>
                                     </TooltipAction>
                                     <TooltipAction text="Delete">
                                         <button onClick={() => handleConfirmationDelete(car._id)} className="text-xl cursor-pointer text-red-500">

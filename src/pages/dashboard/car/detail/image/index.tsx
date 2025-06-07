@@ -10,7 +10,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import { BiImageAdd } from "react-icons/bi"
-import { IoImagesOutline } from "react-icons/io5"
 import { useParams } from "react-router"
 import { useLocalStorage } from "react-use"
 import Swal from "sweetalert2"
@@ -43,6 +42,7 @@ export const PageDashboardCarImage = () => {
                 })
 
                 form.reset()
+                setPreview("")
                 queryClient.invalidateQueries({queryKey: ["carGetOne"]})
             },
 
@@ -73,7 +73,7 @@ export const PageDashboardCarImage = () => {
 
     return (
         <Dialog open={open} onOpenChange={() => setOpen(!open)}>
-            <DialogTrigger className="col-span-1 w-full h-36 bg-green-500 flex items-center justify-center rounded-xl" asChild>
+            <DialogTrigger className="col-span-1 w-full h-48 bg-green-500 flex items-center justify-center rounded-xl" asChild>
                 <div>
                     <BiImageAdd className="text-4xl text-white" />
                 </div>
@@ -90,15 +90,15 @@ export const PageDashboardCarImage = () => {
                               name="image"
                               render={({field}) => (
                                 <FormItem>
-                                    <FormLabel className="border-2 border-gray-300 border-dashed rounded-lg flex flex-col items-center justify-center min-h-40 bg-gray-100 cursor-pointer">
+                                    <FormLabel className="border-2 border-gray-300 border-dashed rounded-lg flex flex-col items-center justify-center min-h-40 max-h-84 bg-gray-100 cursor-pointer">
                                         {preview ? (
-                                             <img src={preview} alt="Image Preview" className="w-full h-full" />
+                                             <img src={preview} alt="Image Preview" className="w-full h-full object-cover" />
                                         ): (
                                             <>
                                                 <img src="/images/upload-file.png" alt="Upload File" className="w-20 h-20" />
                                                 <div className="text-center">
                                                     <h4 className="font-normal text-sm">Drop your image here, or <span className="text-blue-500">Browse</span></h4>
-                                                    <p className="text-xs font-normal text-black/40">Support JPEG, JPG, PNG</p>
+                                                    <p className="text-xs font-normal text-black/40">Support AVIF, JPEG, JPG, PNG</p>
                                                 </div>
                                             </>
                                         )}
@@ -112,7 +112,7 @@ export const PageDashboardCarImage = () => {
                               />
                         </div>
                         <div className="flex items-center justify-end gap-2">
-                            <Button type="button" variant={"ghost"} onClick={handleCancel}>Cancel</Button>
+                            {preview && (<Button type="button" variant={"ghost"} onClick={handleCancel}>Reset</Button>)}
                             <Button type="submit">Upload</Button>
                         </div>
                     </form>

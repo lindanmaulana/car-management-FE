@@ -9,6 +9,7 @@ import PageSignin from "./pages/auth/signin/Index.tsx";
 import PageSignup from "./pages/auth/signup/Index.tsx";
 import PageDashboardCarBrand from "./pages/dashboard/car/brand/index.tsx";
 import { CarAdd } from "./pages/dashboard/car/components/CarAdd.tsx";
+import { CarUpdate } from "./pages/dashboard/car/components/CarUpdate.tsx";
 import { PageDashboardCarDetail } from "./pages/dashboard/car/detail/index.tsx";
 import PageDashboardCar from "./pages/dashboard/car/index.tsx";
 import { LayoutDashboardCar } from "./pages/dashboard/car/Layout.tsx";
@@ -16,6 +17,7 @@ import PageDashboard from "./pages/dashboard/Index.tsx";
 import LayoutDashboard from "./pages/dashboard/Layout.tsx";
 import { LayoutDashboardSetting } from "./pages/dashboard/setting/Layout.tsx";
 import PageDashboardProfile from "./pages/dashboard/setting/profile/index.tsx";
+import { AdminRoute } from "./route/AdminRoute.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,13 +37,14 @@ createRoot(document.getElementById("root")!).render(
             <Route path="signup" element={<PageSignup />} />
           </Route>
 
-          <Route path="/dashboard" element={<LayoutDashboard />}>
+          <Route path="/dashboard" element={<AdminRoute><LayoutDashboard /></AdminRoute>}>
             <Route index={true} element={<PageDashboard />} />
             <Route path="profile" element={<PageDashboardProfile />} />
 
             <Route path="car" element={<LayoutDashboardCar />}>
               <Route index element={<PageDashboardCar />} />
               <Route path="add" element={<CarAdd />} />
+              <Route path="update/:id" element={<CarUpdate />} />
               <Route path="brand" element={<PageDashboardCarBrand />} />
               <Route path="detail/:id" element={<PageDashboardCarDetail />} />
             </Route>

@@ -19,3 +19,5 @@ export interface Car {
     updated_at: Date
     __v: number
 }
+
+export const CARSTATUS: string[] = ["available", "rented", "sold"]

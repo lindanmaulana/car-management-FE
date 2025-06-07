@@ -16,7 +16,7 @@ export class CarSchema {
         plate_number: z.string().min(6),
         mileage: z.preprocess((val) => Number(val), z.number().positive()),
         color: z.string().min(1),
-        description: z.string().min(1)
+        description: z.string().optional()
     })
 
     static readonly UPDATE: ZodType = z.object({
@@ -25,6 +25,14 @@ export class CarSchema {
         model: z.string().min(1).optional(),
         status: z.enum(["available", "rented", "sold"]).optional(),
         price: z.string().min(1).optional(),
+
+        year: z.string().optional(),
+        transmission: z.enum([transmission.MANUAL, transmission.AUTOMATIC]).optional(),
+        fuel_type: z.enum([fuel_type.BENSIN, fuel_type.HYBRID, fuel_type.LISTRIK, fuel_type.SOLAR]).optional(),
+        plate_number: z.string().min(6).optional(),
+        mileage: z.preprocess((val) => Number(val), z.number().positive()).optional(),
+        color: z.string().min(1).optional(),
+        description: z.string().optional()
     })
 }
 
